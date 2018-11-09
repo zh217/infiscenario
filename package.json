@@ -1,0 +1,21 @@
+{
+  "name": "infiscenario",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Ziyang Hu",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^23.6.0",
+    "node-fetch": "^2.2.1"
+  },
+  "dependencies": {
+    "apollo-boost": "^0.1.20",
+    "apollo-link-context": "^1.0.9",
+    "graphql": "^14.0.2",
+    "lodash": "^4.17.11"
+  }
+}
