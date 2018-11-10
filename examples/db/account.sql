@@ -6,6 +6,7 @@ CREATE TABLE infsc.account (
 COMMENT ON TABLE infsc.account
 IS E'@omit create,update,delete,all';
 
+GRANT SELECT ON TABLE infsc.account TO infsc_anon, infsc_user;
 
 CREATE TABLE infsc_priv.account_auth (
   id            INTEGER NOT NULL PRIMARY KEY REFERENCES infsc.account (id) ON DELETE CASCADE,

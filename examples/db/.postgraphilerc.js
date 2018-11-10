@@ -8,6 +8,11 @@ module.exports = {
         defaultRole: "infsc_anon",
         jwtTokenIdentifier: "infsc.jwt_token",
         watch: false,
-        port: config.server_port
+        port: config.server_port,
+        cors: true,
+        plugins: ['@graphile/plugin-supporter'],
+        simpleSubscriptions: true,
+        disableGraphiql: true
+        // subscriptionAuthorizationFunction: 'infsc.validate_subscription'
     }
 };

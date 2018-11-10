@@ -17,7 +17,6 @@ class Registration extends Scenario {
 
             console.error(e.networkError);
             this.sendEvent('REGISTRATION_FAIL', e);
-            throw e;
         }
     }
 }
@@ -71,7 +70,6 @@ class Login extends Scenario {
             this.state.failed = true;
             console.error(e);
             this.sendEvent('LOGIN_FAIL', e);
-            throw e;
         }
     }
 }
