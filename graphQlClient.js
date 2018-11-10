@@ -2,7 +2,7 @@ const {ApolloClient} = require('apollo-client');
 const {createHttpLink} = require('apollo-link-http');
 const {setContext} = require('apollo-link-context');
 const {InMemoryCache} = require('apollo-cache-inmemory');
-const gql = require("graphql-tag");
+const gql = require('graphql-tag');
 
 
 class GraphQlClient {

@@ -1,0 +1,4 @@
+{
+  "pg_uri": "postgres://infsc_server:infsc_rules!@127.0.0.1:5432/infiscenario",
+  "server_port": 5000
+}
