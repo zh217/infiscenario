@@ -1,3 +1,5 @@
+const {setIsGql} = require('./scenario');
+
 class FakeClient {
     constructor(returnValue, willThrow, isAuthenticated) {
         this._returnValue = returnValue;
@@ -25,4 +27,6 @@ class FakeClient {
     }
 }
 
-module.exports = FakeClient;
+module.exports = {
+    FakeClient
+};

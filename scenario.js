@@ -1,5 +1,5 @@
-const {isGql} = require('./graphQlClient');
-const _ = require('lodash');
+const isEqual = require('lodash.isequal');
+const cloneDeep = require('lodash.clonedeep');
 
 function runSoon(func) {
     return setTimeout(func, 0);
@@ -96,10 +96,10 @@ class ScenarioStateProxifier {
     set(target, prop, value) {
         this._checkRestriction(prop);
         if (this._old === null) {
-            this._old = _.cloneDeep(target);
+            this._old = cloneDeep(target);
         }
         this._pendingDeletions.delete(prop);
-        if (!_.isEqual(value, target[value])) {
+        if (!isEqual(value, target[value])) {
             this._pendingChanges.add(prop);
         }
         this._queueUpdate();
@@ -110,7 +110,7 @@ class ScenarioStateProxifier {
     deleteProperty(target, prop) {
         this._checkRestriction(prop, true);
         if (this._old === null) {
-            this._old = _.cloneDeep(target);
+            this._old = cloneDeep(target);
         }
         this._pendingChanges.delete(prop);
         if (target.hasOwnProperty(prop)) {
@@ -140,7 +140,7 @@ class Scenario {
             throw Error('client must be provided when initializing Scenario');
         }
         const stateRestrictions = this._getStateRestrictions();
-        const proxied = _.cloneDeep(this.constructor.initState);
+        const proxied = cloneDeep(this.constructor.initState);
         this._stateProxifier = new ScenarioStateProxifier(proxied, stateRestrictions);
         this.state = new Proxy(proxied, this._stateProxifier);
         this._evtCallbackMap = {};
@@ -230,7 +230,7 @@ class Scenario {
 
     _makeGraphQlRegistrationFunction(q) {
         return (vars, forceUpdate, opts) => {
-            return this.client.call(q, vars, forceUpdate, opts)
+            return this.client.graphql(q, vars, forceUpdate, opts)
         }
     }
 
@@ -254,7 +254,7 @@ class Scenario {
     _makeQueryMethods() {
         for (const k in this.constructor) {
             if (this.constructor.hasOwnProperty(k)) {
-                if (isGql(this.constructor[k])) {
+                if (this.client.isGql(this.constructor[k])) {
                     this[k] = this._makeGraphQlRegistrationFunction(this.constructor[k]);
                 } else if (isHttp(this.constructor[k])) {
                     this[k] = this._makeHttpRegistrationFunction(this.constructor[k]);
@@ -266,4 +266,6 @@ class Scenario {
 
 Scenario.initState = {};
 
-module.exports = Scenario;
+module.exports = {
+    Scenario, setIsGql
+};

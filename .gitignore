@@ -210,3 +210,5 @@ fabric.properties
 # Editor-based Rest Client
 .idea/httpRequests
 
+
+miniprogram_npm
