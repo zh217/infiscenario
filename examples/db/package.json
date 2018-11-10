@@ -1,0 +1,10 @@
+{
+  "name": "infiscenario-db",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@graphile/plugin-supporter": "https://74731d2:9dd22322426e4c1783c11e4c60fbe736@git.graphile.com/git/users/74731d2/postgraphile-supporter.git",
+    "postgraphile": "^4.0.1"
+  }
+}
