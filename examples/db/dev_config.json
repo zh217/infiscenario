@@ -3,12 +3,21 @@
   "schemata": [
     "infsc"
   ],
-  "postgraphile_opts": {
+  "jwt_settings": {
     "jwtSecret": "***_totally_rules!!!",
-    "__pgDefaultRole": "infsc_anon",
+    "jwtAudiences": null,
+    "jwtRole": [
+      "role"
+    ],
+    "jwtVerifyOptions": null,
+    "pgDefaultRole": "infsc_anon"
+  },
+  "postgraphile_opts": {
     "dynamicJson": true,
     "ignoreRBAC": false,
     "jwtPgTypeIdentifier": "infsc.jwt_token",
+    "jwtSecret": "***_totally_rules!!!",
+    "pgDefaultRole": "infsc_anon",
     "showErrorStack": "json",
     "extendedErrors": [
       "hint",

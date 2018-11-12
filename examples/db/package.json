@@ -6,6 +6,7 @@
   "dependencies": {
     "@graphile/plugin-supporter": "git+ssh://git@gitlab.infihis.cn:infihis/postgraphile-supporter.git",
     "express": "^4.16.4",
+    "http-errors": "^1.7.1",
     "jsonwebtoken": "^8.3.0",
     "postgraphile": "^4.0.1"
   }

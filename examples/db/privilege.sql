@@ -6,16 +6,15 @@ CREATE FUNCTION
   infsc.validate_subscription(topic TEXT)
   RETURNS TEXT AS $$
 BEGIN
-  IF current_setting('jwt.claims.account_id') IS NULL
+  IF current_user = 'infsc_user' AND current_setting('jwt.claims.account_id', 't') IS NOT NULL
   THEN
-    RETURN 'OK' :: TEXT;
+    RETURN 'subscription:' || current_user :: TEXT || ':' || current_setting('jwt.claims.account_id');
   ELSE
-    RAISE EXCEPTION 'Subscription denied';
+    RAISE EXCEPTION 'cannot subscribe using role %', current_user;
   END IF;
 END;
 $$
 LANGUAGE plpgsql
-VOLATILE
-SECURITY DEFINER;
+VOLATILE;
 
 GRANT EXECUTE ON FUNCTION infsc.validate_subscription(TEXT) TO infsc_user, infsc_anon;
