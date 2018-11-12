@@ -4,7 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@graphile/plugin-supporter": "https://74731d2:9dd22322426e4c1783c11e4c60fbe736@git.graphile.com/git/users/74731d2/postgraphile-supporter.git",
+    "@graphile/plugin-supporter": "git+ssh://git@gitlab.infihis.cn:infihis/postgraphile-supporter.git",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.3.0",
     "postgraphile": "^4.0.1"
   }
 }
