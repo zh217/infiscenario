@@ -211,4 +211,4 @@ fabric.properties
 .idea/httpRequests
 
 
-miniprogram_npm
+dist/

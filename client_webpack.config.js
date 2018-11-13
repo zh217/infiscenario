@@ -1,9 +1,9 @@
 const path = require('path');
 
 module.exports = {
-    entry: './index.js',
+    entry: './lib/apollo_client.js',
     output: {
-        filename: 'production.js',
+        filename: 'apollo_client.prod.js',
         path: path.resolve(__dirname, 'dist')
     },
     mode: 'production'
