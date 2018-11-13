@@ -9,8 +9,11 @@
   "author": "Ziyang Hu",
   "license": "ISC",
   "devDependencies": {
+    "@types/lodash.clonedeep": "^4.5.4",
+    "@types/lodash.isequal": "^4.5.3",
     "jest": "^23.6.0",
     "node-fetch": "^2.2.1",
+    "typescript": "^3.1.6",
     "webpack": "^4.25.1",
     "webpack-cli": "^3.1.2"
   },
