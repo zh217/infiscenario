@@ -1,17 +1,9 @@
 {
+  "server_port": 5000,
   "pg_uri": "postgres://infsc_server:infsc_rules!@127.0.0.1:5432/infiscenario",
   "schemata": [
     "infsc"
   ],
-  "jwt_settings": {
-    "jwtSecret": "***_totally_rules!!!",
-    "jwtAudiences": null,
-    "jwtRole": [
-      "role"
-    ],
-    "jwtVerifyOptions": null,
-    "pgDefaultRole": "infsc_anon"
-  },
   "postgraphile_opts": {
     "dynamicJson": true,
     "ignoreRBAC": false,
@@ -29,6 +21,5 @@
     "enableCors": true,
     "simpleSubscriptions": true,
     "subscriptionAuthorizationFunction": "infsc.validate_subscription"
-  },
-  "server_port": 5000
+  }
 }
