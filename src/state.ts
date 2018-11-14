@@ -13,20 +13,16 @@ export interface StateCallback {
 export const UNFILTERED = '';
 
 export class ManagedState {
-    private readonly allowedStateKeys: Set<string> | null;
+    private readonly allowedStateKeys: Set<string>;
     private readonly callbackMap: { [key: string]: Set<StateCallback> } = {};
     private readonly pendingChanges: Set<any> = new Set();
     private readonly pendingDeletions: Set<any> = new Set();
-    private pendingFlush: number | null = null;
+    private pendingFlush: any = null;
     private old: State | null = null;
 
     public constructor(private readonly proxied: State) {
         const initKeys = Object.keys(proxied);
-        if (!initKeys) {
-            this.allowedStateKeys = null;
-        } else {
-            this.allowedStateKeys = new Set(initKeys);
-        }
+        this.allowedStateKeys = new Set(initKeys);
     }
 
     public watch(callback: StateCallback, filters?: string[]) {
@@ -65,7 +61,7 @@ export class ManagedState {
     }
 
     private checkRestriction(prop: string, deletion: boolean = false) {
-        if (this.allowedStateKeys === null) {
+        if (!this.allowedStateKeys.size) {
             return;
         }
         if (this.allowedStateKeys.has(prop)) {
@@ -131,4 +127,10 @@ function runSoon(func: { (): void }) {
 
 function cancelRunSoon(handle: number) {
     clearTimeout(handle);
+}
+
+export function makeStateProxy(obj: State) {
+    const manager = new ManagedState(obj);
+    const state = new Proxy(obj, manager);
+    return {state, manager}
 }

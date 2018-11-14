@@ -1,3 +1,5 @@
+export type FetchType = Function;
+
 export interface Client<Q> {
     authenticated: boolean;
 
@@ -5,7 +7,9 @@ export interface Client<Q> {
 
     graphql(query: Q, variables?: { [key: string]: any }, options?: { [key: string]: any }): any;
 
-    http(): any;
+    graphqlSubscribe(query: Q, variables?: { [key: string]: any }, options?: any): any;
 
-    makeQuery(rawQuery: string): Q;
+    http(input?: Request | string | URL, init?: RequestInit): Promise<Response>;
+
+    getGqlMainDef(schema: any): any;
 }

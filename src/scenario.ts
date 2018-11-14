@@ -1,15 +1,14 @@
 import cloneDeep from 'lodash.clonedeep';
 
 import {Client} from './client';
-import {ManagedState, State, StateCallback, UNFILTERED} from './state';
+import {makeStateProxy, ManagedState, State, StateCallback, UNFILTERED} from './state';
+import {getMainDefinition} from "apollo-utilities";
 
-export interface EventCallback {
+interface EventCallback {
     (event: string, payload: any): void
 }
 
-interface PluginMethod {
-    (a: any, b?: any, c?: any): any
-}
+type PluginMethod = Function;
 
 export abstract class Scenario {
     static state: State = {};
@@ -20,18 +19,18 @@ export abstract class Scenario {
 
     protected client: Client<any>;
     protected remote: { [key: string]: PluginMethod } = {};
+    protected subscriptions: { [key: string]: PluginMethod } = {};
 
-    private readonly stateProxifier: ManagedState;
+    private readonly stateManager: ManagedState;
     private readonly eventCallbackMap: { [key: string]: Set<EventCallback> } = {};
 
-    protected constructor(client?: Client<any>) {
+    public constructor(client?: Client<any>) {
         this.client = client || defaultClient!;
 
         const classConstructor = this.constructor as typeof Scenario;
-
-        const proxied = cloneDeep(classConstructor.state);
-        this.stateProxifier = new ManagedState(proxied);
-        this.state = new Proxy(proxied, this.stateProxifier);
+        const {state, manager} = makeStateProxy(cloneDeep(classConstructor.state));
+        this.stateManager = new ManagedState(manager);
+        this.state = state;
         if (typeof (this.constructor as typeof Scenario).events === 'undefined') {
             this.events = new Set();
         } else {
@@ -40,20 +39,12 @@ export abstract class Scenario {
         this.makeQueryMethods();
     }
 
-// TODO
-    private makeQueryMethods() {
-    }
-
-    public setClient(client: Client<any>) {
-        this.client = client;
-    }
-
     public watchState(callback: StateCallback, filters?: string[]) {
-        return this.stateProxifier.watch(callback, filters);
+        return this.stateManager.watch(callback, filters);
     }
 
     public unwatchState(callback: StateCallback) {
-        this.stateProxifier.unwatch(callback);
+        this.stateManager.unwatch(callback);
     }
 
     public watchEvent(callback: EventCallback, filters?: string[]) {
@@ -72,7 +63,7 @@ export abstract class Scenario {
         return callback;
     }
 
-    unwatchEvent(callback: EventCallback) {
+    public unwatchEvent(callback: EventCallback) {
         for (const k in this.eventCallbackMap) {
             if (this.eventCallbackMap.hasOwnProperty(k)) {
                 this.eventCallbackMap[k].delete(callback);
@@ -80,18 +71,18 @@ export abstract class Scenario {
         }
     }
 
-    sendEvent(event: string, payload?: any) {
+    protected sendEvent(event: string, payload?: any) {
         this.checkEventIsValid(event);
         const toCall = [...(this.eventCallbackMap[event] || []), ...(this.eventCallbackMap[UNFILTERED] || [])];
         if (!toCall.length) {
             return;
         }
         for (const f of toCall) {
-            f(payload, event);
+            f(event, payload);
         }
     }
 
-    notifyEventOnce(filters?: string[]) {
+    public notifyEventOnce(filters?: string[]) {
         return new Promise((resolve, reject) => {
             const callback = (event: string, payload: any) => {
                 resolve({event, payload});
@@ -110,10 +101,97 @@ export abstract class Scenario {
         }
     }
 
+    private makeQueryMethods() {
+        const classConstructor = this.constructor as { [key: string]: any };
+        for (const k in classConstructor) {
+            const staticValue = classConstructor[k];
+            if (classConstructor.hasOwnProperty(k) && staticValue) {
+                if (isGraphql(staticValue)) {
+                    const gqlRequest = staticValue;
+                    const mainDef = this.client.getGqlMainDef(gqlRequest);
+                    if (this.client.getGqlMainDef(staticValue).kind === 'OperationDefinition') {
+                        switch (mainDef.operation) {
+                            case 'subscription':
+                                this.subscriptions[k] = this.makeGraphqlSubscriptionRegistrationFunction(gqlRequest);
+                                break;
+                            default:
+                                this.remote[k] = this.makeGraphqlRegistrationFunction(gqlRequest);
+                        }
+                    }
+                } else if (isHttp(staticValue)) {
+                    this.remote[k] = this.makeHttpRegistrationFunction(staticValue);
+                }
+            }
+        }
+    }
+
+    private makeGraphqlRegistrationFunction(query: any) {
+        return (variables?: any, options?: { [key: string]: any }) => {
+            return this.client.graphql(query, variables, options)
+        }
+    }
+
+    private makeGraphqlSubscriptionRegistrationFunction(query: any) {
+        return (variables: any = {}, next: Function, error: Function, options?: any) => {
+            return this.client.graphqlSubscribe(query, variables, options).subscribe(next, error);
+        }
+    }
+
+    private makeHttpRegistrationFunction(schema: any) {
+        const url = schema.url;
+        const opts = {...schema.opts || {}};
+        const queryParams = opts.queryParams;
+        delete opts.queryParams;
+        return (params: any) => {
+            params = params || {};
+            const providedQueryParams = params.queryParams || {};
+            delete params.queryParams;
+            const combinedQueryParams = {...queryParams, ...providedQueryParams};
+            const completedUrl = new URL(url);
+            Object.keys(combinedQueryParams).forEach(key => url.searchParams.append(key, combinedQueryParams[key]));
+            return this.client.http(completedUrl, {...opts, ...params})
+        }
+    }
+
 }
+
 
 let defaultClient: Client<any> | undefined = undefined;
 
 export function setDefaultClient(client: Client<any> | undefined) {
     defaultClient = client;
+}
+
+export {default as gql} from 'graphql-tag';
+
+export function http(url: string, options: any) {
+    return {
+        type: 'http',
+        url: url,
+        opts: options
+    };
+}
+
+function isHttp(schema: any) {
+    return schema.type === 'http';
+}
+
+function isGraphql(schema: any) {
+    return schema.kind === 'Document'
+}
+
+export function httpGet(url: string, options?: any) {
+    return http(url, {...options || {}, method: 'GET'});
+}
+
+export function httpPost(url: string, options?: any) {
+    return http(url, {...options || {}, method: 'POST'});
+}
+
+export function httpPut(url: string, options?: any) {
+    return http(url, {...options || {}, method: 'PUT'});
+}
+
+export function httpDelete(url: string, options?: any) {
+    return http(url, {...options || {}, method: 'DELETE'});
 }

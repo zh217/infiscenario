@@ -2,6 +2,9 @@
   "include": [
     "./src/**/*"
   ],
+  "exclude": [
+    "./lib/**/*"
+  ],
   "compilerOptions": {
     /* Basic Options */
     "target": "es2017",
@@ -10,6 +13,7 @@
     /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
     "lib": [
       "es2017",
+      "esnext.asynciterable",
       "dom"
     ],
     /* Specify library files to be included in the compilation. */
@@ -20,7 +24,7 @@
     // "declarationMap": true,                /* Generates a sourcemap for each corresponding '.d.ts' file. */
     // "sourceMap": true,                     /* Generates corresponding '.map' file. */
     // "outFile": "./",                       /* Concatenate and emit output to single file. */
-    "outDir": "./src/",
+    "outDir": "./lib/",
     /* Redirect output structure to the directory. */
     "rootDir": "./src/",
     /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */

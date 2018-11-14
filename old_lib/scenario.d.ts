@@ -1,1 +1,0 @@
-declare module 'infiscenario/lib/scenario';
