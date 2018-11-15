@@ -33,6 +33,9 @@ export class ManagedState {
             if (typeof this.callbackMap[filter] === 'undefined') {
                 this.callbackMap[filter] = new Set<StateCallback>();
             }
+            if (filter !== UNFILTERED) {
+                this.checkRestriction(filter);
+            }
             this.callbackMap[filter].add(callback);
         }
         return callback;
@@ -44,6 +47,11 @@ export class ManagedState {
                 this.callbackMap[k].delete(callback);
             }
         }
+    }
+
+    public get(target: State, prop: string, receiver: any) {
+        this.checkRestriction(prop);
+        return Reflect.get(target, prop, receiver);
     }
 
     public set(target: State, prop: string, value: any) {
@@ -66,10 +74,10 @@ export class ManagedState {
         }
         if (this.allowedStateKeys.has(prop)) {
             if (deletion) {
-                throw Error(`Cannot delete restricted state ${prop}`);
+                throw Error(`Cannot delete restricted state ${prop} (allowed: ${[...this.allowedStateKeys]})`);
             }
         } else {
-            throw Error(`Cannot operate unknown state ${prop}`);
+            throw Error(`Cannot operate unknown state ${prop} (allowed: ${[...this.allowedStateKeys]})`);
         }
 
     }

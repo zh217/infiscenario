@@ -29,7 +29,7 @@ export abstract class Scenario {
 
         const classConstructor = this.constructor as typeof Scenario;
         const {state, manager} = makeStateProxy(cloneDeep(classConstructor.state));
-        this.stateManager = new ManagedState(manager);
+        this.stateManager = manager;
         this.state = state;
         if (typeof (this.constructor as typeof Scenario).events === 'undefined') {
             this.events = new Set();

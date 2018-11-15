@@ -11,6 +11,7 @@ test('state restriction', () => {
     restrictedState.b = [];
     expect(() => restrictedState.c = undefined).toThrow();
     expect(() => delete restrictedState.a).toThrow();
+    expect(() => restrictedState.x).toThrow();
 
     let {state: unrestrictedState} = makeStateProxy({});
     unrestrictedState.a = 2;
