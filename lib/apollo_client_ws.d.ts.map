@@ -1,0 +1,1 @@
+{"version":3,"file":"apollo_client_ws.d.ts","sourceRoot":"","sources":["../src/apollo_client_ws.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,gBAAgB,EAAC,MAAM,iBAAiB,CAAC;AACjD,OAAO,EAAC,aAAa,EAAC,MAAM,gBAAgB,CAAC;AAE7C,qBAAa,kBAAmB,SAAQ,gBAAgB;IACpD,SAAS,CAAC,gBAAgB;CAoB7B"}
