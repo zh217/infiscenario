@@ -3,7 +3,7 @@ import {WebSocketLink} from "apollo-link-ws";
 
 export class ApolloHttpWsClient extends ApolloHttpClient {
     protected makeApolloWsLink() {
-        if (!this.wsUri || !this.wsImpl) {
+        if (!this.wsUri || !this.wsImpl || (!this.anonWs && !this.authenticated)) {
             this.wsEnabled = false;
             return;
         }

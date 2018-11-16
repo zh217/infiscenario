@@ -8,6 +8,7 @@ export interface HttpClientOptions {
     debug?: boolean;
     wsUri?: string;
     wsImpl?: any;
+    anonWs?: boolean;
 }
 export declare class ApolloHttpClient implements Client<TaggedGql> {
     private fetch;
@@ -18,7 +19,8 @@ export declare class ApolloHttpClient implements Client<TaggedGql> {
     protected wsUri?: string;
     protected wsImpl?: WebSocket;
     protected wsEnabled: boolean;
-    constructor({ uri, fetch, token, debug, wsUri, wsImpl }: HttpClientOptions);
+    protected anonWs: boolean;
+    constructor({ uri, fetch, token, debug, wsUri, wsImpl, anonWs }: HttpClientOptions);
     private makeApolloClient;
     private makeApolloLink;
     private makeApolloHttpLink;
