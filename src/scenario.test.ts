@@ -71,6 +71,10 @@ class TestScenario extends Scenario {
         const result = await this.remote.requestServer();
         return result.status;
     }
+
+    login() {
+        this.client.setAuthToken('loginToken');
+    }
 }
 
 jest.setTimeout(30000);
@@ -88,6 +92,8 @@ test('scenario integration test', async () => {
     }));
 
     const scenario = new TestScenario();
+    expect(() => scenario.startBookStream()).toThrow();
+    scenario.login();
     scenario.startBookStream();
     // await new Promise(resolve => setTimeout(resolve, 100));
     expect(scenario.state.books).toEqual([]);

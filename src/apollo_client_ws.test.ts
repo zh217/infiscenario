@@ -22,7 +22,8 @@ test('making client', async () => {
         wsUri: 'ws://127.0.0.1:4000/graphql',
         wsImpl: WebSocket
     });
-    expect(clientWithWs.isWsEnabled).toBeTruthy();
+
+    expect(clientWithWs.isWsEnabled).toBeFalsy();
 
     const subs = gql`
         subscription{
@@ -40,6 +41,14 @@ test('making client', async () => {
             }
         }
     `;
+
+    expect(() => clientWithWs.graphqlSubscribe(subs).subscribe((x: any) => {
+        calledData = x.data.bookAdded;
+    })).toThrow();
+
+    clientWithWs.setAuthToken('some token');
+    expect(clientWithWs.isWsEnabled).toBeTruthy();
+
     let calledData = null;
     const subResult = clientWithWs.graphqlSubscribe(subs).subscribe((x: any) => {
         calledData = x.data.bookAdded;

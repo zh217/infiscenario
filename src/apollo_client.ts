@@ -165,6 +165,9 @@ export class ApolloHttpClient implements Client<TaggedGql> {
     }
 
     public graphqlSubscribe(query: TaggedGql, variables?: { [key: string]: any }, options?: any) {
+        if (!this.isWsEnabled) {
+            throw Error('WebSocket is not enabled for this client, so you cannot subscribe');
+        }
         variables = variables || {};
         options = options || {};
         return this.client.subscribe({
