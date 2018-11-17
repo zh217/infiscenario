@@ -34,6 +34,12 @@ test('making client', async () => {
         }
     `;
 
+    const wrongSubs = gql`
+        subscription {
+            whatever
+        }
+    `;
+
     const mut = gql`
         mutation($title: String, $author: String) {
             addBook(title: $title, author: $author) {

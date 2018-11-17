@@ -132,8 +132,13 @@ export abstract class Scenario {
     }
 
     private makeGraphqlSubscriptionRegistrationFunction(query: any) {
-        return (variables: any = {}, next: Function, error: Function, options?: any) => {
-            return this.client.graphqlSubscribe(query, variables, options).subscribe(next, error);
+        return (variables: any = {}, next: Function, error?: Function, complete?: Function, options?: any) => {
+            if (!error) {
+                error = (err: any) => {
+                    console.error('Subscription has encountered an error', err, query)
+                }
+            }
+            return this.client.graphqlSubscribe(query, variables, options).subscribe(next, error, complete);
         }
     }
 
