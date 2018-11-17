@@ -1,6 +1,6 @@
 {
   "name": "infiscenario",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Object-oriented business logic containers for the mobile world",
   "scripts": {
     "test": "jest"
@@ -37,7 +37,6 @@
     "graphql-request": "^1.8.2",
     "graphql-tag": "latest",
     "lodash.clonedeep": "^4.5.0",
-    "lodash.isequal": "^4.5.0",
     "subscriptions-transport-ws": "^0.9.15"
   }
 }

@@ -2,7 +2,6 @@ import cloneDeep from 'lodash.clonedeep';
 
 import {Client} from './client';
 import {makeStateProxy, ManagedState, State, StateCallback, UNFILTERED} from './state';
-import {getMainDefinition} from "apollo-utilities";
 
 interface EventCallback {
     (event: string, payload: any): void

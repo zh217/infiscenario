@@ -1,4 +1,3 @@
-import isEqual from 'lodash.isequal';
 import cloneDeep from 'lodash.clonedeep';
 
 
@@ -60,9 +59,7 @@ export class ManagedState {
             this.old = cloneDeep(target);
         }
         this.pendingDeletions.delete(prop);
-        if (!isEqual(value, target[prop])) {
-            this.pendingChanges.add(prop);
-        }
+        this.pendingChanges.add(prop);
         this.queueUpdate();
         target[prop] = value;
         return true
@@ -76,9 +73,7 @@ export class ManagedState {
         for (const prop of Object.keys(newState)) {
             this.checkRestriction(prop);
             this.pendingDeletions.delete(prop);
-            if (!isEqual(newState[prop], this.proxied[prop])) {
-                this.pendingChanges.add(prop);
-            }
+            this.pendingChanges.add(prop);
             this.proxied[prop] = newState[prop];
         }
         this.queueUpdate();
