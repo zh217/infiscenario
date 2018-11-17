@@ -39,6 +39,10 @@ export abstract class Scenario {
         this.makeQueryMethods();
     }
 
+    public setState(newState: State) {
+        this.stateManager.setState(newState);
+    }
+
     public watchState(callback: StateCallback, filters?: string[]) {
         return this.stateManager.watch(callback, filters);
     }

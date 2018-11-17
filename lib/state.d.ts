@@ -18,6 +18,7 @@ export declare class ManagedState {
     unwatch(callback: StateCallback): void;
     get(target: State, prop: string, receiver: any): any;
     set(target: State, prop: string, value: any): boolean;
+    setState(newState: State): void;
     private checkRestriction;
     private queueUpdate;
     private flushChanges;

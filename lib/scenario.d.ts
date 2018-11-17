@@ -19,6 +19,7 @@ export declare abstract class Scenario {
     private readonly stateManager;
     private readonly eventCallbackMap;
     constructor(client?: Client<any>);
+    setState(newState: State): void;
     watchState(callback: StateCallback, filters?: string[]): StateCallback;
     unwatchState(callback: StateCallback): void;
     watchEvent(callback: EventCallback, filters?: string[]): EventCallback;

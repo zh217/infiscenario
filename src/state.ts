@@ -60,12 +60,28 @@ export class ManagedState {
             this.old = cloneDeep(target);
         }
         this.pendingDeletions.delete(prop);
-        if (!isEqual(value, target[value])) {
+        if (!isEqual(value, target[prop])) {
             this.pendingChanges.add(prop);
         }
         this.queueUpdate();
         target[prop] = value;
         return true
+    }
+
+    public setState(newState: State) {
+        if (this.old === null) {
+            this.old = cloneDeep(this.proxied);
+        }
+
+        for (const prop of Object.keys(newState)) {
+            this.checkRestriction(prop);
+            this.pendingDeletions.delete(prop);
+            if (!isEqual(newState[prop], this.proxied[prop])) {
+                this.pendingChanges.add(prop);
+            }
+            this.proxied[prop] = newState[prop];
+        }
+        this.queueUpdate();
     }
 
     private checkRestriction(prop: string, deletion: boolean = false) {
