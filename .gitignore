@@ -212,3 +212,5 @@ fabric.properties
 
 
 dist/
+yarn.lock
+package-lock.json
