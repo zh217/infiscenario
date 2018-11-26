@@ -155,8 +155,17 @@ export abstract class Scenario {
             const providedQueryParams = params.queryParams || {};
             delete params.queryParams;
             const combinedQueryParams = {...queryParams, ...providedQueryParams};
-            const completedUrl = new URL(url);
-            Object.keys(combinedQueryParams).forEach(key => url.searchParams.append(key, combinedQueryParams[key]));
+            let completedUrl = url;
+            let hasParam = completedUrl.indexOf('?') !== -1;
+            Object.keys(combinedQueryParams).forEach(key => {
+                if (hasParam) {
+                    hasParam = true;
+                    completedUrl += '?'
+                } else {
+                    completedUrl += '&'
+                }
+                completedUrl += `${encodeURIComponent(key)}=${encodeURIComponent(combinedQueryParams[key])}`;
+            });
             return this.client.http(completedUrl, {...opts, ...params})
         }
     }
