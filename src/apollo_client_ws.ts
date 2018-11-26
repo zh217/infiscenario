@@ -17,6 +17,7 @@ export class ApolloHttpWsClient extends ApolloHttpClient {
         return new WebSocketLink({
             uri: wsEndpoint,
             options: {
+                lazy: true,
                 reconnect: true
             },
             webSocketImpl: this.wsImpl
