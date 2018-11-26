@@ -211,6 +211,5 @@ fabric.properties
 .idea/httpRequests
 
 
-dist/
 yarn.lock
 package-lock.json
