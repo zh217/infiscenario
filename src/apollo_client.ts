@@ -127,6 +127,10 @@ export class ApolloHttpClient implements Client<TaggedGql> {
         this.client = this.makeApolloClient();
     }
 
+    public currentToken() {
+        return this.token;
+    }
+
 
     http(input?: Request | string, init?: RequestInit) {
         return this.fetch(input, init);

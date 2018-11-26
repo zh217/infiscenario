@@ -3,6 +3,8 @@ export type FetchType = Function;
 export interface Client<Q> {
     authenticated: boolean;
 
+    currentToken(): string | null;
+
     setAuthToken(token: string | null): void;
 
     graphql(query: Q, variables?: { [key: string]: any }, options?: { [key: string]: any }): any;

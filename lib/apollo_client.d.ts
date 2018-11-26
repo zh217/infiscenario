@@ -30,6 +30,7 @@ export declare class ApolloHttpClient implements Client<TaggedGql> {
     private makeApolloCache;
     readonly authenticated: boolean;
     setAuthToken(token: string | null): void;
+    currentToken(): string | null;
     http(input?: Request | string, init?: RequestInit): any;
     graphql(query: any, variables?: {
         [p: string]: any;
