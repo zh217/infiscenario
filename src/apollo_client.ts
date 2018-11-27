@@ -150,7 +150,7 @@ export class ApolloHttpClient implements Client<TaggedGql> {
 
     private async queryGql(query: TaggedGql, variables?: { [key: string]: any }, options?: any) {
         variables = variables || {};
-        options = options || {};
+        options = options || {fetchPolicy: 'network-only'};
         return await this.client.query({
             ...options,
             query, variables
