@@ -14,4 +14,6 @@ export interface Client<Q> {
     http(input?: Request | string | URL, init?: RequestInit): Promise<Response>;
 
     getGqlMainDef(schema: any): any;
+
+    getHostUrl(host: string): string;
 }

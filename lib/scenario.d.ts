@@ -34,29 +34,34 @@ export declare abstract class Scenario {
 }
 export declare function setDefaultClient(client: Client<any> | undefined): void;
 export { default as gql } from 'graphql-tag';
-export declare function http(url: string, options: any): {
+export declare function http(host: string, path: string, options: any): {
+    host: string;
+    path: string;
     type: string;
-    url: string;
     opts: any;
 };
-export declare function httpGet(url: string, options?: any): {
+export declare function httpGet(host: string, path: string, options?: any): {
+    host: string;
+    path: string;
     type: string;
-    url: string;
     opts: any;
 };
-export declare function httpPost(url: string, options?: any): {
+export declare function httpPost(host: string, path: string, options?: any): {
+    host: string;
+    path: string;
     type: string;
-    url: string;
     opts: any;
 };
-export declare function httpPut(url: string, options?: any): {
+export declare function httpPut(host: string, path: string, options?: any): {
+    host: string;
+    path: string;
     type: string;
-    url: string;
     opts: any;
 };
-export declare function httpDelete(url: string, options?: any): {
+export declare function httpDelete(host: string, path: string, options?: any): {
+    host: string;
+    path: string;
     type: string;
-    url: string;
     opts: any;
 };
 //# sourceMappingURL=scenario.d.ts.map

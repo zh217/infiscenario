@@ -40,7 +40,7 @@ class TestScenario extends Scenario {
         ${TestScenario.bookFragment}
     `;
 
-    static requestServer = httpGet('http://127.0.0.1:4002/whatever_that_is');
+    static requestServer = httpGet('default', 'http://127.0.0.1:4002/whatever_that_is');
 
     bookStreamSubscription: any;
 
@@ -88,7 +88,10 @@ test('scenario integration test', async () => {
         uri: 'http://127.0.0.1:4002',
         fetch,
         wsUri: 'ws://127.0.0.1:4002/graphql',
-        wsImpl: WebSocket
+        wsImpl: WebSocket,
+        httpServers: {
+            'default': 'http://127.0.0.1:4002'
+        }
     }));
 
     const scenario = new TestScenario();

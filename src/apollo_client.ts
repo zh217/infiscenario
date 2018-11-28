@@ -17,13 +17,15 @@ export interface HttpClientOptions {
     debug?: boolean
     wsUri?: string,
     wsImpl?: any,
-    anonWs?: boolean
+    anonWs?: boolean,
+    httpServers?: { [key: string]: string }
 }
 
 export class ApolloHttpClient implements Client<TaggedGql> {
     private fetch: FetchType;
     private readonly uri: string;
     private client: ApolloClient<any>;
+    private httpServers: { [key: string]: string };
     protected debug: boolean;
     protected token: string | null;
     protected wsUri?: string;
@@ -31,7 +33,7 @@ export class ApolloHttpClient implements Client<TaggedGql> {
     protected wsEnabled: boolean = false;
     protected anonWs: boolean;
 
-    public constructor({uri, fetch, token, debug, wsUri, wsImpl, anonWs}: HttpClientOptions) {
+    public constructor({uri, fetch, token, debug, wsUri, wsImpl, anonWs, httpServers}: HttpClientOptions) {
         this.fetch = fetch || window.fetch;
         this.uri = uri;
         this.token = token || null;
@@ -40,6 +42,7 @@ export class ApolloHttpClient implements Client<TaggedGql> {
         this.wsImpl = wsImpl;
         this.anonWs = !!anonWs;
         this.client = this.makeApolloClient();
+        this.httpServers = httpServers || {};
     }
 
     private makeApolloClient() {
@@ -187,6 +190,10 @@ export class ApolloHttpClient implements Client<TaggedGql> {
 
     public get isWsEnabled() {
         return this.wsEnabled;
+    }
+
+    getHostUrl(host: string): string {
+        return this.httpServers[host] || host;
     }
 
 }

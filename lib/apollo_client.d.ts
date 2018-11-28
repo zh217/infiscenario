@@ -9,18 +9,22 @@ export interface HttpClientOptions {
     wsUri?: string;
     wsImpl?: any;
     anonWs?: boolean;
+    httpServers?: {
+        [key: string]: string;
+    };
 }
 export declare class ApolloHttpClient implements Client<TaggedGql> {
     private fetch;
     private readonly uri;
     private client;
+    private httpServers;
     protected debug: boolean;
     protected token: string | null;
     protected wsUri?: string;
     protected wsImpl?: WebSocket;
     protected wsEnabled: boolean;
     protected anonWs: boolean;
-    constructor({ uri, fetch, token, debug, wsUri, wsImpl, anonWs }: HttpClientOptions);
+    constructor({ uri, fetch, token, debug, wsUri, wsImpl, anonWs, httpServers }: HttpClientOptions);
     private makeApolloClient;
     private makeApolloLink;
     private makeApolloHttpLink;
@@ -44,6 +48,7 @@ export declare class ApolloHttpClient implements Client<TaggedGql> {
     }, options?: any): import("apollo-client/util/Observable").Observable<any>;
     getGqlMainDef(schema: any): any;
     readonly isWsEnabled: boolean;
+    getHostUrl(host: string): string;
 }
 export {};
 //# sourceMappingURL=apollo_client.d.ts.map

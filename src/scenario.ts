@@ -146,7 +146,8 @@ export abstract class Scenario {
     }
 
     private makeHttpRegistrationFunction(schema: any) {
-        const url = schema.url;
+        const host = schema.host;
+        const path = schema.path;
         const opts = {...schema.opts || {}};
         const queryParams = opts.queryParams;
         delete opts.queryParams;
@@ -155,7 +156,7 @@ export abstract class Scenario {
             const providedQueryParams = params.queryParams || {};
             delete params.queryParams;
             const combinedQueryParams = {...queryParams, ...providedQueryParams};
-            let completedUrl = url;
+            let completedUrl = this.client.getHostUrl(host) + '/' + path;
             let hasParam = completedUrl.indexOf('?') !== -1;
             Object.keys(combinedQueryParams).forEach(key => {
                 if (hasParam) {
@@ -181,10 +182,10 @@ export function setDefaultClient(client: Client<any> | undefined) {
 
 export {default as gql} from 'graphql-tag';
 
-export function http(url: string, options: any) {
+export function http(host: string, path: string, options: any) {
     return {
+        host, path,
         type: 'http',
-        url: url,
         opts: options
     };
 }
@@ -197,18 +198,18 @@ function isGraphql(schema: any) {
     return schema.kind === 'Document'
 }
 
-export function httpGet(url: string, options?: any) {
-    return http(url, {...options || {}, method: 'GET'});
+export function httpGet(host: string, path: string, options?: any) {
+    return http(host, path, {...options || {}, method: 'GET'});
 }
 
-export function httpPost(url: string, options?: any) {
-    return http(url, {...options || {}, method: 'POST'});
+export function httpPost(host: string, path: string, options?: any) {
+    return http(host, path, {...options || {}, method: 'POST'});
 }
 
-export function httpPut(url: string, options?: any) {
-    return http(url, {...options || {}, method: 'PUT'});
+export function httpPut(host: string, path: string, options?: any) {
+    return http(host, path, {...options || {}, method: 'PUT'});
 }
 
-export function httpDelete(url: string, options?: any) {
-    return http(url, {...options || {}, method: 'DELETE'});
+export function httpDelete(host: string, path: string, options?: any) {
+    return http(host, path, {...options || {}, method: 'DELETE'});
 }

@@ -13,5 +13,6 @@ export interface Client<Q> {
     }, options?: any): any;
     http(input?: Request | string | URL, init?: RequestInit): Promise<Response>;
     getGqlMainDef(schema: any): any;
+    getHostUrl(host: string): string;
 }
 //# sourceMappingURL=client.d.ts.map
