@@ -156,7 +156,9 @@ export abstract class Scenario {
             const providedQueryParams = params.queryParams || {};
             delete params.queryParams;
             const combinedQueryParams = {...queryParams, ...providedQueryParams};
-            let completedUrl = this.client.getHostUrl(host) + '/' + path;
+            const hostUrl = this.client.getHostUrl(host);
+            const hasSlash = hostUrl[hostUrl.length - 1] === '/' || path[0] === '/';
+            let completedUrl = hostUrl + (hasSlash ? '' : '/') + path;
             let hasParam = completedUrl.indexOf('?') !== -1;
             Object.keys(combinedQueryParams).forEach(key => {
                 if (hasParam) {

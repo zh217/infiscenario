@@ -1,6 +1,6 @@
 {
   "name": "infiscenario",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Object-oriented business logic containers for the mobile world",
   "scripts": {
     "test": "jest"
