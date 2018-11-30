@@ -108,9 +108,9 @@ export class ApolloHttpClient implements Client<TaggedGql> {
         }
         return onError(({graphQLErrors, networkError}) => {
             if (graphQLErrors)
-                graphQLErrors.map(({message, locations, path}) =>
+                graphQLErrors.map((err) =>
                     console.error(
-                        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+                        `[GraphQL error]: ${JSON.stringify(err, null, 2)}`
                     )
                 );
             if (networkError) console.error(`[Network error]: ${networkError}`);
