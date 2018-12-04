@@ -136,7 +136,8 @@ export class ApolloHttpClient implements Client<TaggedGql> {
 
 
     http(input?: Request | string, init?: RequestInit) {
-        return this.fetch(input, init);
+        const fetch = this.fetch;
+        return fetch(input, init);
     }
 
     public graphql(query: any, variables?: { [p: string]: any }, options?: { [p: string]: any }): any {
