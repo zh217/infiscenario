@@ -1,3 +1,4 @@
+import { ApolloClient } from 'apollo-client';
 import { ApolloLink } from "apollo-link";
 import { FetchType, Client } from "./client";
 declare type TaggedGql = any;
@@ -12,19 +13,22 @@ export interface HttpClientOptions {
     httpServers?: {
         [key: string]: string;
     };
+    defaultQueryOptions?: object;
+    defaultMutationOptions?: object;
+    defaultSubscriptionOptions?: object;
 }
 export declare class ApolloHttpClient implements Client<TaggedGql> {
-    private fetch;
+    private readonly fetch;
     private readonly uri;
-    private client;
-    private httpServers;
+    private readonly httpServers;
+    protected client: ApolloClient<any>;
     protected debug: boolean;
     protected token: string | null;
     protected wsUri?: string;
     protected wsImpl?: WebSocket;
     protected wsEnabled: boolean;
     protected anonWs: boolean;
-    constructor({ uri, fetch, token, debug, wsUri, wsImpl, anonWs, httpServers }: HttpClientOptions);
+    constructor(options: HttpClientOptions);
     private makeApolloClient;
     private makeApolloLink;
     private makeApolloHttpLink;

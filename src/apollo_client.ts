@@ -18,14 +18,17 @@ export interface HttpClientOptions {
     wsUri?: string,
     wsImpl?: any,
     anonWs?: boolean,
-    httpServers?: { [key: string]: string }
+    httpServers?: { [key: string]: string },
+    defaultQueryOptions?: object,
+    defaultMutationOptions?: object,
+    defaultSubscriptionOptions?: object
 }
 
 export class ApolloHttpClient implements Client<TaggedGql> {
-    private fetch: FetchType;
+    private readonly fetch: FetchType;
     private readonly uri: string;
-    private client: ApolloClient<any>;
-    private httpServers: { [key: string]: string };
+    private readonly httpServers: { [key: string]: string };
+    protected client: ApolloClient<any>;
     protected debug: boolean;
     protected token: string | null;
     protected wsUri?: string;
@@ -33,16 +36,16 @@ export class ApolloHttpClient implements Client<TaggedGql> {
     protected wsEnabled: boolean = false;
     protected anonWs: boolean;
 
-    public constructor({uri, fetch, token, debug, wsUri, wsImpl, anonWs, httpServers}: HttpClientOptions) {
-        this.fetch = fetch || window.fetch;
-        this.uri = uri;
-        this.token = token || null;
-        this.debug = !!debug;
-        this.wsUri = wsUri;
-        this.wsImpl = wsImpl;
-        this.anonWs = !!anonWs;
+    public constructor(options: HttpClientOptions) {
+        this.fetch = options.fetch || window.fetch;
+        this.uri = options.uri;
+        this.token = options.token || null;
+        this.debug = !!options.debug;
+        this.wsUri = options.wsUri;
+        this.wsImpl = options.wsImpl;
+        this.anonWs = !!options.anonWs;
         this.client = this.makeApolloClient();
-        this.httpServers = httpServers || {};
+        this.httpServers = options.httpServers || {};
     }
 
     private makeApolloClient() {
@@ -154,7 +157,7 @@ export class ApolloHttpClient implements Client<TaggedGql> {
 
     private async queryGql(query: TaggedGql, variables?: { [key: string]: any }, options?: any) {
         variables = variables || {};
-        options = options || {fetchPolicy: 'network-only'};
+        options = options || {};
         return await this.client.query({
             ...options,
             query, variables

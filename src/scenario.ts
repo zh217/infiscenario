@@ -129,8 +129,16 @@ export abstract class Scenario {
     }
 
     private makeGraphqlRegistrationFunction(query: any) {
-        return (variables?: any, options?: { [key: string]: any }) => {
-            return this.client.graphql(query, variables, options)
+        return (variables?: any, options?: { [key: string]: any } | boolean) => {
+            let opts;
+            if (options === true) {
+                opts = {fetchPolicy: 'cache-first'}
+            } else if (!options) {
+                opts = {fetchPolicy: 'network-only'}
+            } else {
+                opts = options
+            }
+            return this.client.graphql(query, variables, opts)
         }
     }
 
