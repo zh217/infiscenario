@@ -133,7 +133,7 @@ export abstract class Scenario {
             let opts;
             if (options === true) {
                 opts = {fetchPolicy: 'cache-first'}
-            } else if (!options) {
+            } else if (options === false) {
                 opts = {fetchPolicy: 'network-only'}
             } else {
                 opts = options
