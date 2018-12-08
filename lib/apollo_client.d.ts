@@ -13,9 +13,6 @@ export interface HttpClientOptions {
     httpServers?: {
         [key: string]: string;
     };
-    defaultQueryOptions?: object;
-    defaultMutationOptions?: object;
-    defaultSubscriptionOptions?: object;
 }
 export declare class ApolloHttpClient implements Client<TaggedGql> {
     private readonly fetch;

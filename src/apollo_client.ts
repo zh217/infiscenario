@@ -18,10 +18,7 @@ export interface HttpClientOptions {
     wsUri?: string,
     wsImpl?: any,
     anonWs?: boolean,
-    httpServers?: { [key: string]: string },
-    defaultQueryOptions?: object,
-    defaultMutationOptions?: object,
-    defaultSubscriptionOptions?: object
+    httpServers?: { [key: string]: string }
 }
 
 export class ApolloHttpClient implements Client<TaggedGql> {
