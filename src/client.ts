@@ -11,7 +11,7 @@ export interface Client<Q> {
 
     graphqlSubscribe(query: Q, variables?: { [key: string]: any }, options?: any): any;
 
-    http(input?: Request | string | URL, init?: RequestInit): Promise<Response>;
+    http(input?: any | string | URL, init?: any): Promise<any>;
 
     getGqlMainDef(schema: any): any;
 

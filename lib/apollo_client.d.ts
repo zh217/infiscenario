@@ -22,7 +22,7 @@ export declare class ApolloHttpClient implements Client<TaggedGql> {
     protected debug: boolean;
     protected token: string | null;
     protected wsUri?: string;
-    protected wsImpl?: WebSocket;
+    protected wsImpl?: any;
     protected wsEnabled: boolean;
     protected anonWs: boolean;
     constructor(options: HttpClientOptions);
@@ -36,7 +36,7 @@ export declare class ApolloHttpClient implements Client<TaggedGql> {
     readonly authenticated: boolean;
     setAuthToken(token: string | null): void;
     currentToken(): string | null;
-    http(input?: Request | string, init?: RequestInit): any;
+    http(input?: any | string, init?: any): any;
     graphql(query: any, variables?: {
         [p: string]: any;
     }, options?: {

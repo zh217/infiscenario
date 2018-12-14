@@ -29,7 +29,7 @@ export class ApolloHttpClient implements Client<TaggedGql> {
     protected debug: boolean;
     protected token: string | null;
     protected wsUri?: string;
-    protected wsImpl?: WebSocket;
+    protected wsImpl?: any;
     protected wsEnabled: boolean = false;
     protected anonWs: boolean;
 
@@ -135,7 +135,7 @@ export class ApolloHttpClient implements Client<TaggedGql> {
     }
 
 
-    http(input?: Request | string, init?: RequestInit) {
+    http(input?: any | string, init?: any) {
         const fetch = this.fetch;
         return fetch(input, init);
     }
