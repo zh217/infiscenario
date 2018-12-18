@@ -171,7 +171,7 @@ export abstract class Scenario {
             let completedUrl = hostUrl + (hasSlash ? '' : '/') + path;
 
             Object.keys(providedUrlParams).forEach(k => {
-                completedUrl = completedUrl.replace(k, providedUrlParams[k]);
+                completedUrl = completedUrl.replace(':' + k, providedUrlParams[k]);
             });
 
             let hasParam = completedUrl.indexOf('?') !== -1;
